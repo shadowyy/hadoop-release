@@ -564,7 +564,7 @@
                       <family>unix</family>
                       <message>native build only supported on Mac or Unix</message>
                     </requireOS>
-                  </rules>  
+                  </rules>
                   <fail>true</fail>
                 </configuration>
               </execution>
@@ -580,7 +580,7 @@
                   <goal>javah</goal>
                 </goals>
                 <configuration>
-                  <javahPath>${env.JAVA_HOME}/bin/javah</javahPath>
+                  <javahPath>${JAVA_HOME}/bin/javah</javahPath>
                   <javahClassNames>
                     <javahClassName>org.apache.hadoop.io.compress.zlib.ZlibCompressor</javahClassName>
                     <javahClassName>org.apache.hadoop.io.compress.zlib.ZlibDecompressor</javahClassName>
@@ -623,7 +623,7 @@
                     </exec>
                     <!-- The second make is a workaround for HADOOP-9215.  It can
                          be removed when version 2.6 of cmake is no longer supported . -->
-                    <exec executable="make" dir="${project.build.directory}/native" failonerror="true"></exec>
+                    <exec executable="make" dir="${project.build.directory}/native" failonerror="true"/>
                   </target>
                 </configuration>
               </execution>
@@ -684,7 +684,7 @@
                       <family>windows</family>
                       <message>native-win build only supported on Windows</message>
                     </requireOS>
-                  </rules>  
+                  </rules>
                   <fail>true</fail>
                 </configuration>
               </execution>
@@ -700,7 +700,7 @@
                   <goal>javah</goal>
                 </goals>
                 <configuration>
-                  <javahPath>${env.JAVA_HOME}/bin/javah</javahPath>
+                  <javahPath>${JAVA_HOME}/bin/javah</javahPath>
                   <javahClassNames>
                     <javahClassName>org.apache.hadoop.io.compress.zlib.ZlibCompressor</javahClassName>
                     <javahClassName>org.apache.hadoop.io.compress.zlib.ZlibDecompressor</javahClassName>

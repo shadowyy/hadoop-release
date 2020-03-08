@@ -59,6 +59,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
       <url>${distMgmtSnapshotsUrl}</url>
     </repository>
     <repository>
+      <id>repo.spring.io</id>
+      <url>https://repo.spring.io/plugins-release/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>repository.jboss.org</id>
       <url>http://repository.jboss.org/nexus/content/groups/public/</url>
       <snapshots>
@@ -82,7 +89,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <properties>
     <distMgmtSnapshotsId>apache.snapshots.https</distMgmtSnapshotsId>
     <distMgmtSnapshotsName>Apache Development Snapshot Repository</distMgmtSnapshotsName>
-    <distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</distMgmtSnapshotsUrl>
+    <distMgmtSnapshotsUrl>https://maven.aliyun.com/repository/snapshots</distMgmtSnapshotsUrl>
     <distMgmtStagingId>apache.staging.https</distMgmtStagingId>
     <distMgmtStagingName>Apache Release Distribution Repository</distMgmtStagingName>
     <distMgmtStagingUrl>https://repository.apache.org/service/local/staging/deploy/maven2</distMgmtStagingUrl>
@@ -104,6 +111,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <maven-clover2-plugin.version>3.3.0</maven-clover2-plugin.version>
     <maven-bundle-plugin.version>2.5.0</maven-bundle-plugin.version>
     <maven-source-plugin.version>2.4</maven-source-plugin.version>
+    <additionalparam>-Xdoclint:none</additionalparam>
   </properties>
 
   <modules>
@@ -270,10 +278,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
             </goals>
           </execution>
         </executions>
-      </plugin>	
+      </plugin>
     </plugins>
   </build>
-  
+
   <reporting>
     <excludeDefaults>true</excludeDefaults>
     <plugins>
@@ -319,15 +327,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                 </docletArtifact>
               </docletArtifacts>
               <useStandardDocletOptions>true</useStandardDocletOptions>
-    
+
               <!-- switch on dependency-driven aggregation -->
               <includeDependencySources>false</includeDependencySources>
-    
+
               <dependencySourceIncludes>
                 <!-- include ONLY dependencies I control -->
                 <dependencySourceInclude>org.apache.hadoop:hadoop-annotations</dependencySourceInclude>
               </dependencySourceIncludes>
-    
+
             </configuration>
             <reports>
               <report>aggregate</report>
@@ -350,7 +358,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
       </plugin>
     </plugins>
   </reporting>
-  
+
   <profiles>
     <profile>
       <id>src</id>
@@ -429,6 +437,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                   <overview>hadoop-common-project/hadoop-common/src/main/java/overview.html</overview>
                 </configuration>
               </execution>
+              <execution>
+                  <id>attach-javadocs</id>
+                  <goals>
+                      <goal>jar</goal>
+                  </goals>
+                  <configuration>
+                      <additionalparam>${javadoc.opts}</additionalparam>
+                  </configuration>
+              </execution>
             </executions>
           </plugin>
         </plugins>
@@ -465,12 +482,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
       <properties>
         <cloverLicenseLocation>${user.home}/.clover.license</cloverLicenseLocation>
         <cloverDatabase>${project.build.directory}/clover/hadoop-coverage.db</cloverDatabase>
-        <!-- NB: This additional parametrization is made in order 
+        <!-- NB: This additional parametrization is made in order
              to be able to re-define these properties with "-Dk=v" maven options.
-             By some reason the expressions declared in clover 
-             docs like "${maven.clover.generateHtml}" do not work in that way. 
-             However, the below properties are confirmed to work: e.g. 
-             -DcloverGenHtml=false switches off the Html generation.  
+             By some reason the expressions declared in clover
+             docs like "${maven.clover.generateHtml}" do not work in that way.
+             However, the below properties are confirmed to work: e.g.
+             -DcloverGenHtml=false switches off the Html generation.
              The default values provided here exactly correspond to Clover defaults, so
              the behavior is 100% backwards compatible. -->
         <cloverAlwaysReport>true</cloverAlwaysReport>
@@ -527,6 +544,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>java8-doclint-disabled</id>
+      <activation>
+        <jdk>[1.8,)</jdk>
+      </activation>
+      <properties>
+        <javadoc.opts>-Xdoclint:none</javadoc.opts>
+      </properties>
     </profile>
   </profiles>
 </project>
